@@ -1,0 +1,1175 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="initial-scale=1,user-scalable=no,maximum-scale=1,width=device-width">
+        <meta name="mobile-web-app-capable" content="yes">
+        <meta name="apple-mobile-web-app-capable" content="yes">
+        <link rel="stylesheet" href="css/leaflet.css">
+        <link rel="stylesheet" href="css/qgis2web.css"><link rel="stylesheet" href="css/fontawesome-all.min.css">
+        <link rel="stylesheet" href="css/leaflet-search.css">
+        <link rel="stylesheet" href="css/filter.css">
+<link rel="stylesheet" href="css/nouislider.min.css">
+        <link rel="stylesheet" href="css/leaflet-control-geocoder.Geocoder.css">
+        <style>
+        html, body, #map {
+            width: 100%;
+            height: 100%;
+            padding: 0;
+            margin: 0;
+        }
+        </style>
+        <title>Khmer pagodas in Soc Trang </title>
+    </head>
+    <body>
+        <div id="map">
+        </div>
+        <script src="js/qgis2web_expressions.js"></script>
+        <script src="js/leaflet.js"></script>
+        <script src="js/leaflet.rotatedMarker.js"></script>
+        <script src="js/leaflet.pattern.js"></script>
+        <script src="js/leaflet-hash.js"></script>
+        <script src="js/Autolinker.min.js"></script>
+        <script src="js/rbush.min.js"></script>
+        <script src="js/labelgun.min.js"></script>
+        <script src="js/labels.js"></script>
+        <script src="js/leaflet-control-geocoder.Geocoder.js"></script>
+        <script src="js/leaflet-search.js"></script>
+        <script src="js/tailDT.js"></script>
+<script src="js/nouislider.min.js"></script>
+<script src="js/wNumb.js"></script>
+        <script src="data/VNM_water_areas_dcw_1.js"></script>
+        <script src="data/VNM_water_lines_dcw_2.js"></script>
+        <script src="data/KhmerPagodaAge_3.js"></script>
+        <script src="data/KhmerPogadaClassification_4.js"></script>
+        <script src="data/ChuaKhmertheohuyen_5.js"></script>
+        <script src="data/ChuaKhmer_6.js"></script>
+        <script>
+        var highlightLayer;
+        function highlightFeature(e) {
+            highlightLayer = e.target;
+
+            if (e.target.feature.geometry.type === 'LineString') {
+              highlightLayer.setStyle({
+                color: '#ff0000',
+              });
+            } else {
+              highlightLayer.setStyle({
+                fillColor: '#ff0000',
+                fillOpacity: 1
+              });
+            }
+            highlightLayer.openPopup();
+        }
+        var map = L.map('map', {
+            zoomControl:true, maxZoom:28, minZoom:1
+        }).fitBounds([[9.267748276901752,105.22800697679136],[10.002977331766555,106.73587087481715]]);
+        var hash = new L.Hash(map);
+        map.attributionControl.setPrefix('<a href="https://github.com/tomchadwin/qgis2web" target="_blank">qgis2web</a> &middot; <a href="https://leafletjs.com" title="A JS library for interactive maps">Leaflet</a> &middot; <a href="https://qgis.org">QGIS</a>');
+        var autolinker = new Autolinker({truncate: {length: 30, location: 'smart'}});
+        var bounds_group = new L.featureGroup([]);
+        function setBounds() {
+        }
+        map.createPane('pane_GoogleSatellite_0');
+        map.getPane('pane_GoogleSatellite_0').style.zIndex = 400;
+        var layer_GoogleSatellite_0 = L.tileLayer('https://mt1.google.com/vt/lyrs=s&x={x}&y={y}&z={z}', {
+            pane: 'pane_GoogleSatellite_0',
+            opacity: 1.0,
+            attribution: '<a href="https://www.google.at/permissions/geoguidelines/attr-guide.html">Map data ©2015 Google</a>',
+            minZoom: 1,
+            maxZoom: 28,
+            minNativeZoom: 0,
+            maxNativeZoom: 20
+        });
+        layer_GoogleSatellite_0;
+        map.addLayer(layer_GoogleSatellite_0);
+        function pop_VNM_water_areas_dcw_1(feature, layer) {
+            layer.on({
+                mouseout: function(e) {
+                    for (i in e.target._eventParents) {
+                        e.target._eventParents[i].resetStyle(e.target);
+                    }
+                    if (typeof layer.closePopup == 'function') {
+                        layer.closePopup();
+                    } else {
+                        layer.eachLayer(function(feature){
+                            feature.closePopup()
+                        });
+                    }
+                },
+                mouseover: highlightFeature,
+            });
+            var popupContent = '<table>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['ISO'] !== null ? autolinker.link(feature.properties['ISO'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['COUNTRY'] !== null ? autolinker.link(feature.properties['COUNTRY'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['F_CODE_DES'] !== null ? autolinker.link(feature.properties['F_CODE_DES'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['HYC_DESCRI'] !== null ? autolinker.link(feature.properties['HYC_DESCRI'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['NAME'] !== null ? autolinker.link(feature.properties['NAME'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                </table>';
+            layer.bindPopup(popupContent, {maxHeight: 400});
+        }
+
+        function style_VNM_water_areas_dcw_1_0() {
+            return {
+                pane: 'pane_VNM_water_areas_dcw_1',
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(225,89,137,1.0)',
+                interactive: true,
+            }
+        }
+        map.createPane('pane_VNM_water_areas_dcw_1');
+        map.getPane('pane_VNM_water_areas_dcw_1').style.zIndex = 401;
+        map.getPane('pane_VNM_water_areas_dcw_1').style['mix-blend-mode'] = 'normal';
+        var layer_VNM_water_areas_dcw_1 = new L.geoJson(json_VNM_water_areas_dcw_1, {
+            attribution: '',
+            interactive: true,
+            dataVar: 'json_VNM_water_areas_dcw_1',
+            layerName: 'layer_VNM_water_areas_dcw_1',
+            pane: 'pane_VNM_water_areas_dcw_1',
+            onEachFeature: pop_VNM_water_areas_dcw_1,
+            style: style_VNM_water_areas_dcw_1_0,
+        });
+        bounds_group.addLayer(layer_VNM_water_areas_dcw_1);
+        map.addLayer(layer_VNM_water_areas_dcw_1);
+        function pop_VNM_water_lines_dcw_2(feature, layer) {
+            layer.on({
+                mouseout: function(e) {
+                    for (i in e.target._eventParents) {
+                        e.target._eventParents[i].resetStyle(e.target);
+                    }
+                    if (typeof layer.closePopup == 'function') {
+                        layer.closePopup();
+                    } else {
+                        layer.eachLayer(function(feature){
+                            feature.closePopup()
+                        });
+                    }
+                },
+                mouseover: highlightFeature,
+            });
+            var popupContent = '<table>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['F_CODE_DES'] !== null ? autolinker.link(feature.properties['F_CODE_DES'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['HYC_DESCRI'] !== null ? autolinker.link(feature.properties['HYC_DESCRI'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['NAM'] !== null ? autolinker.link(feature.properties['NAM'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['ISO'] !== null ? autolinker.link(feature.properties['ISO'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['NAME_0'] !== null ? autolinker.link(feature.properties['NAME_0'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                </table>';
+            layer.bindPopup(popupContent, {maxHeight: 400});
+        }
+
+        function style_VNM_water_lines_dcw_2_0() {
+            return {
+                pane: 'pane_VNM_water_lines_dcw_2',
+                opacity: 1,
+                color: 'rgba(229,182,54,1.0)',
+                dashArray: '',
+                lineCap: 'square',
+                lineJoin: 'bevel',
+                weight: 1.0,
+                fillOpacity: 0,
+                interactive: true,
+            }
+        }
+        map.createPane('pane_VNM_water_lines_dcw_2');
+        map.getPane('pane_VNM_water_lines_dcw_2').style.zIndex = 402;
+        map.getPane('pane_VNM_water_lines_dcw_2').style['mix-blend-mode'] = 'normal';
+        var layer_VNM_water_lines_dcw_2 = new L.geoJson(json_VNM_water_lines_dcw_2, {
+            attribution: '',
+            interactive: true,
+            dataVar: 'json_VNM_water_lines_dcw_2',
+            layerName: 'layer_VNM_water_lines_dcw_2',
+            pane: 'pane_VNM_water_lines_dcw_2',
+            onEachFeature: pop_VNM_water_lines_dcw_2,
+            style: style_VNM_water_lines_dcw_2_0,
+        });
+        bounds_group.addLayer(layer_VNM_water_lines_dcw_2);
+        map.addLayer(layer_VNM_water_lines_dcw_2);
+        function pop_KhmerPagodaAge_3(feature, layer) {
+            layer.on({
+                mouseout: function(e) {
+                    for (i in e.target._eventParents) {
+                        e.target._eventParents[i].resetStyle(e.target);
+                    }
+                    if (typeof layer.closePopup == 'function') {
+                        layer.closePopup();
+                    } else {
+                        layer.eachLayer(function(feature){
+                            feature.closePopup()
+                        });
+                    }
+                },
+                mouseover: highlightFeature,
+            });
+            var popupContent = '<table>\
+                    <tr>\
+                        <th scope="row">Name</th>\
+                        <td>' + (feature.properties['Name Khmer'] !== null ? autolinker.link(feature.properties['Name Khmer'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">Year of construction</th>\
+                        <td>' + (feature.properties['Building'] !== null ? autolinker.link(feature.properties['Building'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">Address</th>\
+                        <td>' + (feature.properties['Address'] !== null ? autolinker.link(feature.properties['Address'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">Age </th>\
+                        <td>' + (feature.properties['old'] !== null ? autolinker.link(feature.properties['old'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">Classification</th>\
+                        <td>' + (feature.properties['Classifica'] !== null ? autolinker.link(feature.properties['Classifica'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">Range of age</th>\
+                        <td>' + (feature.properties['Age'] !== null ? autolinker.link(feature.properties['Age'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">Huyen</th>\
+                        <td>' + (feature.properties['Huyen'] !== null ? autolinker.link(feature.properties['Huyen'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                </table>';
+            layer.bindPopup(popupContent, {maxHeight: 400});
+        }
+
+        function style_KhmerPagodaAge_3_0(feature) {
+            switch(String(feature.properties['Age'])) {
+                case '<50':
+                    return {
+                pane: 'pane_KhmerPagodaAge_3',
+                radius: 8.0,
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1,
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(100,220,190,1.0)',
+                interactive: true,
+            }
+                    break;
+                case '>500':
+                    return {
+                pane: 'pane_KhmerPagodaAge_3',
+                radius: 8.0,
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1,
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(164,45,203,1.0)',
+                interactive: true,
+            }
+                    break;
+                case '100 - 300':
+                    return {
+                pane: 'pane_KhmerPagodaAge_3',
+                radius: 8.0,
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1,
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(94,211,52,1.0)',
+                interactive: true,
+            }
+                    break;
+                case '300 - 500':
+                    return {
+                pane: 'pane_KhmerPagodaAge_3',
+                radius: 8.0,
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1,
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(201,92,119,1.0)',
+                interactive: true,
+            }
+                    break;
+                case '50 - 100':
+                    return {
+                pane: 'pane_KhmerPagodaAge_3',
+                radius: 8.0,
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1,
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(64,101,212,1.0)',
+                interactive: true,
+            }
+                    break;
+            }
+        }
+        map.createPane('pane_KhmerPagodaAge_3');
+        map.getPane('pane_KhmerPagodaAge_3').style.zIndex = 403;
+        map.getPane('pane_KhmerPagodaAge_3').style['mix-blend-mode'] = 'normal';
+        var layer_KhmerPagodaAge_3 = new L.geoJson(json_KhmerPagodaAge_3, {
+            attribution: '',
+            interactive: true,
+            dataVar: 'json_KhmerPagodaAge_3',
+            layerName: 'layer_KhmerPagodaAge_3',
+            pane: 'pane_KhmerPagodaAge_3',
+            onEachFeature: pop_KhmerPagodaAge_3,
+            pointToLayer: function (feature, latlng) {
+                var context = {
+                    feature: feature,
+                    variables: {}
+                };
+                return L.circleMarker(latlng, style_KhmerPagodaAge_3_0(feature));
+            },
+        });
+        bounds_group.addLayer(layer_KhmerPagodaAge_3);
+        map.addLayer(layer_KhmerPagodaAge_3);
+        function pop_KhmerPogadaClassification_4(feature, layer) {
+            layer.on({
+                mouseout: function(e) {
+                    for (i in e.target._eventParents) {
+                        e.target._eventParents[i].resetStyle(e.target);
+                    }
+                    if (typeof layer.closePopup == 'function') {
+                        layer.closePopup();
+                    } else {
+                        layer.eachLayer(function(feature){
+                            feature.closePopup()
+                        });
+                    }
+                },
+                mouseover: highlightFeature,
+            });
+            var popupContent = '<table>\
+                    <tr>\
+                        <th scope="row">Name</th>\
+                        <td>' + (feature.properties['Name Khmer'] !== null ? autolinker.link(feature.properties['Name Khmer'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">Year of construction</th>\
+                        <td>' + (feature.properties['Building'] !== null ? autolinker.link(feature.properties['Building'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">Adress</th>\
+                        <td>' + (feature.properties['Address'] !== null ? autolinker.link(feature.properties['Address'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">Age</th>\
+                        <td>' + (feature.properties['old'] !== null ? autolinker.link(feature.properties['old'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">Classification</th>\
+                        <td>' + (feature.properties['Classifica'] !== null ? autolinker.link(feature.properties['Classifica'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">Range of age</th>\
+                        <td>' + (feature.properties['Age'] !== null ? autolinker.link(feature.properties['Age'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">Huyen</th>\
+                        <td>' + (feature.properties['Huyen'] !== null ? autolinker.link(feature.properties['Huyen'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                </table>';
+            layer.bindPopup(popupContent, {maxHeight: 400});
+        }
+
+        function style_KhmerPogadaClassification_4_0(feature) {
+            switch(String(feature.properties['Classifica'])) {
+                case 'Cấp quốc gia':
+                    return {
+                pane: 'pane_KhmerPogadaClassification_4',
+                radius: 8.0,
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1,
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(109,205,79,1.0)',
+                interactive: true,
+            }
+                    break;
+                case 'Cấp tỉnh':
+                    return {
+                pane: 'pane_KhmerPogadaClassification_4',
+                radius: 8.0,
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1,
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(190,61,233,1.0)',
+                interactive: true,
+            }
+                    break;
+                case 'Chưa phân hạng':
+                    return {
+                pane: 'pane_KhmerPogadaClassification_4',
+                radius: 8.0,
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1,
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(103,185,212,1.0)',
+                interactive: true,
+            }
+                    break;
+            }
+        }
+        map.createPane('pane_KhmerPogadaClassification_4');
+        map.getPane('pane_KhmerPogadaClassification_4').style.zIndex = 404;
+        map.getPane('pane_KhmerPogadaClassification_4').style['mix-blend-mode'] = 'normal';
+        var layer_KhmerPogadaClassification_4 = new L.geoJson(json_KhmerPogadaClassification_4, {
+            attribution: '',
+            interactive: true,
+            dataVar: 'json_KhmerPogadaClassification_4',
+            layerName: 'layer_KhmerPogadaClassification_4',
+            pane: 'pane_KhmerPogadaClassification_4',
+            onEachFeature: pop_KhmerPogadaClassification_4,
+            pointToLayer: function (feature, latlng) {
+                var context = {
+                    feature: feature,
+                    variables: {}
+                };
+                return L.circleMarker(latlng, style_KhmerPogadaClassification_4_0(feature));
+            },
+        });
+        bounds_group.addLayer(layer_KhmerPogadaClassification_4);
+        map.addLayer(layer_KhmerPogadaClassification_4);
+        function pop_ChuaKhmertheohuyen_5(feature, layer) {
+            layer.on({
+                mouseout: function(e) {
+                    for (i in e.target._eventParents) {
+                        e.target._eventParents[i].resetStyle(e.target);
+                    }
+                    if (typeof layer.closePopup == 'function') {
+                        layer.closePopup();
+                    } else {
+                        layer.eachLayer(function(feature){
+                            feature.closePopup()
+                        });
+                    }
+                },
+                mouseover: highlightFeature,
+            });
+            var popupContent = '<table>\
+                    <tr>\
+                        <th scope="row">Name</th>\
+                        <td>' + (feature.properties['Name Khmer'] !== null ? autolinker.link(feature.properties['Name Khmer'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">Year of construction</th>\
+                        <td>' + (feature.properties['Building'] !== null ? autolinker.link(feature.properties['Building'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">Address</th>\
+                        <td>' + (feature.properties['Address'] !== null ? autolinker.link(feature.properties['Address'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">Age</th>\
+                        <td>' + (feature.properties['old'] !== null ? autolinker.link(feature.properties['old'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">Classification</th>\
+                        <td>' + (feature.properties['Classifica'] !== null ? autolinker.link(feature.properties['Classifica'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">Range of age</th>\
+                        <td>' + (feature.properties['Age'] !== null ? autolinker.link(feature.properties['Age'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">District</th>\
+                        <td>' + (feature.properties['Huyen'] !== null ? autolinker.link(feature.properties['Huyen'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                </table>';
+            layer.bindPopup(popupContent, {maxHeight: 400});
+        }
+
+        function style_ChuaKhmertheohuyen_5_0(feature) {
+            switch(String(feature.properties['Huyen'])) {
+                case 'HUYỆN CHÂU THÀNH':
+                    return {
+                pane: 'pane_ChuaKhmertheohuyen_5',
+                radius: 4.0,
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1,
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(203,83,97,1.0)',
+                interactive: true,
+            }
+                    break;
+                case 'HUYỆN CÙ LAO DUNG':
+                    return {
+                pane: 'pane_ChuaKhmertheohuyen_5',
+                radius: 4.0,
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1,
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(224,116,236,1.0)',
+                interactive: true,
+            }
+                    break;
+                case 'HUYỆN KẾ SÁCH':
+                    return {
+                pane: 'pane_ChuaKhmertheohuyen_5',
+                radius: 4.0,
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1,
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(54,218,202,1.0)',
+                interactive: true,
+            }
+                    break;
+                case 'HUYỆN LONG PHÚ':
+                    return {
+                pane: 'pane_ChuaKhmertheohuyen_5',
+                radius: 4.0,
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1,
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(169,212,105,1.0)',
+                interactive: true,
+            }
+                    break;
+                case 'HUYỆN MỸ TÚ':
+                    return {
+                pane: 'pane_ChuaKhmertheohuyen_5',
+                radius: 4.0,
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1,
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(204,115,60,1.0)',
+                interactive: true,
+            }
+                    break;
+                case 'HUYỆN MỸ XUYÊN':
+                    return {
+                pane: 'pane_ChuaKhmertheohuyen_5',
+                radius: 4.0,
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1,
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(121,133,239,1.0)',
+                interactive: true,
+            }
+                    break;
+                case 'HUYỆN NGÃ NĂM':
+                    return {
+                pane: 'pane_ChuaKhmertheohuyen_5',
+                radius: 4.0,
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1,
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(220,76,163,1.0)',
+                interactive: true,
+            }
+                    break;
+                case 'HUYỆN THẠNH TRỊ':
+                    return {
+                pane: 'pane_ChuaKhmertheohuyen_5',
+                radius: 4.0,
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1,
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(156,111,223,1.0)',
+                interactive: true,
+            }
+                    break;
+                case 'HUYỆN TRẦN ĐỀ':
+                    return {
+                pane: 'pane_ChuaKhmertheohuyen_5',
+                radius: 4.0,
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1,
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(75,162,219,1.0)',
+                interactive: true,
+            }
+                    break;
+                case 'THÀNH PHỐ SÓC TRĂNG':
+                    return {
+                pane: 'pane_ChuaKhmertheohuyen_5',
+                radius: 4.0,
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1,
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(111,240,163,1.0)',
+                interactive: true,
+            }
+                    break;
+                case 'THỊ XÃ VĨNH CHÂU':
+                    return {
+                pane: 'pane_ChuaKhmertheohuyen_5',
+                radius: 4.0,
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1,
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(240,222,60,1.0)',
+                interactive: true,
+            }
+                    break;
+            }
+        }
+        map.createPane('pane_ChuaKhmertheohuyen_5');
+        map.getPane('pane_ChuaKhmertheohuyen_5').style.zIndex = 405;
+        map.getPane('pane_ChuaKhmertheohuyen_5').style['mix-blend-mode'] = 'normal';
+        var layer_ChuaKhmertheohuyen_5 = new L.geoJson(json_ChuaKhmertheohuyen_5, {
+            attribution: '',
+            interactive: true,
+            dataVar: 'json_ChuaKhmertheohuyen_5',
+            layerName: 'layer_ChuaKhmertheohuyen_5',
+            pane: 'pane_ChuaKhmertheohuyen_5',
+            onEachFeature: pop_ChuaKhmertheohuyen_5,
+            pointToLayer: function (feature, latlng) {
+                var context = {
+                    feature: feature,
+                    variables: {}
+                };
+                return L.circleMarker(latlng, style_ChuaKhmertheohuyen_5_0(feature));
+            },
+        });
+        bounds_group.addLayer(layer_ChuaKhmertheohuyen_5);
+        map.addLayer(layer_ChuaKhmertheohuyen_5);
+        function pop_ChuaKhmer_6(feature, layer) {
+            layer.on({
+                mouseout: function(e) {
+                    for (i in e.target._eventParents) {
+                        e.target._eventParents[i].resetStyle(e.target);
+                    }
+                    if (typeof layer.closePopup == 'function') {
+                        layer.closePopup();
+                    } else {
+                        layer.eachLayer(function(feature){
+                            feature.closePopup()
+                        });
+                    }
+                },
+                mouseover: highlightFeature,
+            });
+            var popupContent = '<table>\
+                    <tr>\
+                        <th scope="row">Name</th>\
+                        <td>' + (feature.properties['Name Khmer'] !== null ? autolinker.link(feature.properties['Name Khmer'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">Year of construction</th>\
+                        <td>' + (feature.properties['Building'] !== null ? autolinker.link(feature.properties['Building'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">Address</th>\
+                        <td>' + (feature.properties['Address'] !== null ? autolinker.link(feature.properties['Address'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">Age</th>\
+                        <td>' + (feature.properties['old'] !== null ? autolinker.link(feature.properties['old'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">Classification</th>\
+                        <td>' + (feature.properties['Classifica'] !== null ? autolinker.link(feature.properties['Classifica'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">Range of age</th>\
+                        <td>' + (feature.properties['Age'] !== null ? autolinker.link(feature.properties['Age'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">District</th>\
+                        <td>' + (feature.properties['Huyen'] !== null ? autolinker.link(feature.properties['Huyen'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                </table>';
+            layer.bindPopup(popupContent, {maxHeight: 400});
+        }
+
+        function style_ChuaKhmer_6_0() {
+            return {
+                pane: 'pane_ChuaKhmer_6',
+                radius: 4.0,
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1,
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(190,178,151,1.0)',
+                interactive: true,
+            }
+        }
+        map.createPane('pane_ChuaKhmer_6');
+        map.getPane('pane_ChuaKhmer_6').style.zIndex = 406;
+        map.getPane('pane_ChuaKhmer_6').style['mix-blend-mode'] = 'normal';
+        var layer_ChuaKhmer_6 = new L.geoJson(json_ChuaKhmer_6, {
+            attribution: '',
+            interactive: true,
+            dataVar: 'json_ChuaKhmer_6',
+            layerName: 'layer_ChuaKhmer_6',
+            pane: 'pane_ChuaKhmer_6',
+            onEachFeature: pop_ChuaKhmer_6,
+            pointToLayer: function (feature, latlng) {
+                var context = {
+                    feature: feature,
+                    variables: {}
+                };
+                return L.circleMarker(latlng, style_ChuaKhmer_6_0(feature));
+            },
+        });
+        bounds_group.addLayer(layer_ChuaKhmer_6);
+        map.addLayer(layer_ChuaKhmer_6);
+            var title = new L.Control();
+            title.onAdd = function (map) {
+                this._div = L.DomUtil.create('div', 'info');
+                this.update();
+                return this._div;
+            };
+            title.update = function () {
+                this._div.innerHTML = '<h2>Khmer pagodas in Soc Trang </h2>';
+            };
+            title.addTo(map);
+            var abstract = new L.Control({'position':'bottomright'});
+            abstract.onAdd = function (map) {
+                this._div = L.DomUtil.create('div',
+                'leaflet-control abstract');
+                this._div.id = 'abstract'
+
+                    abstract.show();
+                    return this._div;
+                };
+                abstract.show = function () {
+                    this._div.classList.remove("abstract");
+                    this._div.classList.add("abstractUncollapsed");
+                    this._div.innerHTML = 'This is the web map desinged  in March  2025 to show the Age and Classification of Khmer pagadas in Soc Trang Province, Vietnam';
+            };
+            abstract.addTo(map);
+        var osmGeocoder = new L.Control.Geocoder({
+            collapsed: true,
+            position: 'topleft',
+            text: 'Search',
+            title: 'Testing'
+        }).addTo(map);
+        document.getElementsByClassName('leaflet-control-geocoder-icon')[0]
+        .className += ' fa fa-search';
+        document.getElementsByClassName('leaflet-control-geocoder-icon')[0]
+        .title += 'Search for a place';
+        var baseMaps = {};
+        L.control.layers(baseMaps,{'<img src="legend/ChuaKhmer_6.png" /> Chua Khmer': layer_ChuaKhmer_6,'Chua Khmer theo huyen<br /><table><tr><td style="text-align: center;"><img src="legend/ChuaKhmertheohuyen_5_HUYỆNCHÂUTHÀNH0.png" /></td><td>HUYỆN CHÂU THÀNH</td></tr><tr><td style="text-align: center;"><img src="legend/ChuaKhmertheohuyen_5_HUYỆNCÙLAODUNG1.png" /></td><td>HUYỆN CÙ LAO DUNG</td></tr><tr><td style="text-align: center;"><img src="legend/ChuaKhmertheohuyen_5_HUYỆNKẾSÁCH2.png" /></td><td>HUYỆN KẾ SÁCH</td></tr><tr><td style="text-align: center;"><img src="legend/ChuaKhmertheohuyen_5_HUYỆNLONGPHÚ3.png" /></td><td>HUYỆN LONG PHÚ</td></tr><tr><td style="text-align: center;"><img src="legend/ChuaKhmertheohuyen_5_HUYỆNMỸTÚ4.png" /></td><td>HUYỆN MỸ TÚ</td></tr><tr><td style="text-align: center;"><img src="legend/ChuaKhmertheohuyen_5_HUYỆNMỸXUYÊN5.png" /></td><td>HUYỆN MỸ XUYÊN</td></tr><tr><td style="text-align: center;"><img src="legend/ChuaKhmertheohuyen_5_HUYỆNNGÃNĂM6.png" /></td><td>HUYỆN NGÃ NĂM</td></tr><tr><td style="text-align: center;"><img src="legend/ChuaKhmertheohuyen_5_HUYỆNTHẠNHTRỊ7.png" /></td><td>HUYỆN THẠNH TRỊ</td></tr><tr><td style="text-align: center;"><img src="legend/ChuaKhmertheohuyen_5_HUYỆNTRẦNĐỀ8.png" /></td><td>HUYỆN TRẦN ĐỀ</td></tr><tr><td style="text-align: center;"><img src="legend/ChuaKhmertheohuyen_5_THÀNHPHỐSÓCTRĂNG9.png" /></td><td>THÀNH PHỐ SÓC TRĂNG</td></tr><tr><td style="text-align: center;"><img src="legend/ChuaKhmertheohuyen_5_THỊXÃVĨNHCHÂU10.png" /></td><td>THỊ XÃ VĨNH CHÂU</td></tr></table>': layer_ChuaKhmertheohuyen_5,'Khmer Pogada (Classification)<br /><table><tr><td style="text-align: center;"><img src="legend/KhmerPogadaClassification_4_Cấpquốcgia0.png" /></td><td>Cấp quốc gia</td></tr><tr><td style="text-align: center;"><img src="legend/KhmerPogadaClassification_4_Cấptỉnh1.png" /></td><td>Cấp tỉnh</td></tr><tr><td style="text-align: center;"><img src="legend/KhmerPogadaClassification_4_Chưaphânhạng2.png" /></td><td>Chưa phân hạng</td></tr></table>': layer_KhmerPogadaClassification_4,'Khmer Pagoda (Age)<br /><table><tr><td style="text-align: center;"><img src="legend/KhmerPagodaAge_3_500.png" /></td><td><50</td></tr><tr><td style="text-align: center;"><img src="legend/KhmerPagodaAge_3_5001.png" /></td><td>>500</td></tr><tr><td style="text-align: center;"><img src="legend/KhmerPagodaAge_3_1003002.png" /></td><td>100 - 300</td></tr><tr><td style="text-align: center;"><img src="legend/KhmerPagodaAge_3_3005003.png" /></td><td>300 - 500</td></tr><tr><td style="text-align: center;"><img src="legend/KhmerPagodaAge_3_501004.png" /></td><td>50 - 100</td></tr></table>': layer_KhmerPagodaAge_3,'<img src="legend/VNM_water_lines_dcw_2.png" /> VNM_water_lines_dcw': layer_VNM_water_lines_dcw_2,'<img src="legend/VNM_water_areas_dcw_1.png" /> VNM_water_areas_dcw': layer_VNM_water_areas_dcw_1,"Google Satellite": layer_GoogleSatellite_0,}).addTo(map);
+        setBounds();
+        map.addControl(new L.Control.Search({
+            layer: layer_ChuaKhmertheohuyen_5,
+            initial: false,
+            hideMarkerOnCollapse: true,
+            propertyName: 'Huyen'}));
+        document.getElementsByClassName('search-button')[0].className +=
+         ' fa fa-binoculars';
+        var mapDiv = document.getElementById('map');
+        var row = document.createElement('div');
+        row.className="row";
+        row.id="all";
+        row.style.height = "100%";
+        var col1 = document.createElement('div');
+        col1.className="col9";
+        col1.id = "mapWindow";
+        col1.style.height = "99%";
+        col1.style.width = "80%";
+        col1.style.display = "inline-block";
+        var col2 = document.createElement('div');
+        col2.className="col3";
+        col2.id = "menu";
+        col2.style.display = "inline-block";
+        mapDiv.parentNode.insertBefore(row, mapDiv);
+        document.getElementById("all").appendChild(col1);
+        document.getElementById("all").appendChild(col2);
+        col1.appendChild(mapDiv)
+        var Filters = {"Building": "int","old": "int","Age": "str","Huyen": "str","Classifica": "str"};
+        function filterFunc() {
+          map.eachLayer(function(lyr){
+          if ("options" in lyr && "dataVar" in lyr["options"]){
+            features = this[lyr["options"]["dataVar"]].features.slice(0);
+            try{
+              for (key in Filters){
+                keyS = key.replace(/[^a-zA-Z0-9_]/g, "")
+                if (Filters[key] == "str" || Filters[key] == "bool"){
+                  var selection = [];
+                  var options = document.getElementById("sel_" + keyS).options
+                  for (var i=0; i < options.length; i++) {
+                    if (options[i].selected) selection.push(options[i].value);
+                  }
+                    try{
+                      if (key in features[0].properties){
+                        for (i = features.length - 1;
+                          i >= 0; --i){
+                          if (selection.indexOf(
+                          features[i].properties[key])<0
+                          && selection.length>0) {
+                          features.splice(i,1);
+                          }
+                        }
+                      }
+                    } catch(err){
+                  }
+                }
+                if (Filters[key] == "int"){
+                  sliderVals =  document.getElementById(
+                    "div_" + keyS).noUiSlider.get();
+                  try{
+                    if (key in features[0].properties){
+                    for (i = features.length - 1; i >= 0; --i){
+                      if (parseInt(features[i].properties[key])
+                          < sliderVals[0]
+                          || parseInt(features[i].properties[key])
+                          > sliderVals[1]){
+                            features.splice(i,1);
+                          }
+                        }
+                      }
+                    } catch(err){
+                    }
+                  }
+                if (Filters[key] == "real"){
+                  sliderVals =  document.getElementById(
+                    "div_" + keyS).noUiSlider.get();
+                  try{
+                    if (key in features[0].properties){
+                    for (i = features.length - 1; i >= 0; --i){
+                      if (features[i].properties[key]
+                          < sliderVals[0]
+                          || features[i].properties[key]
+                          > sliderVals[1]){
+                            features.splice(i,1);
+                          }
+                        }
+                      }
+                    } catch(err){
+                    }
+                  }
+                if (Filters[key] == "date"
+                  || Filters[key] == "datetime"
+                  || Filters[key] == "time"){
+                  try{
+                    if (key in features[0].properties){
+                      HTMLkey = key.replace(/[&\/\\#,+()$~%.'":*?<>{} ]/g, '');
+                      startdate = document.getElementById("dat_" +
+                        HTMLkey + "_date1").value.replace(" ", "T");
+                      enddate = document.getElementById("dat_" +
+                        HTMLkey + "_date2").value.replace(" ", "T");
+                      for (i = features.length - 1; i >= 0; --i){
+                        if (features[i].properties[key] < startdate
+                          || features[i].properties[key] > enddate){
+                          features.splice(i,1);
+                        }
+                      }
+                    }
+                  } catch(err){
+                  }
+                }
+              }
+            } catch(err){
+            }
+          this[lyr["options"]["layerName"]].clearLayers();
+          this[lyr["options"]["layerName"]].addData(features);
+          }
+          })
+        }
+            document.getElementById("menu").appendChild(
+                document.createElement("div"));
+            var div_Building = document.createElement("div");
+            div_Building.id = "div_Building";
+            div_Building.className = "slider";
+            document.getElementById("menu").appendChild(div_Building);
+            var lab_Building = document.createElement('div');
+            lab_Building.innerHTML  = 'Building: <span id="val_Building"></span>';
+            lab_Building.className = 'filterlabel';
+            document.getElementById("menu").appendChild(lab_Building);
+            var reset_Building = document.createElement('div');
+            reset_Building.innerHTML = 'clear filter';
+            reset_Building.className = 'filterlabel';
+            lab_Building.className = 'filterlabel';
+            reset_Building.onclick = function() {
+                sel_Building.noUiSlider.reset();
+            };
+            document.getElementById("menu").appendChild(reset_Building);
+            var sel_Building = document.getElementById('div_Building');
+            noUiSlider.create(sel_Building, {
+                connect: true,
+                start: [1224, 2004],
+                step: 1,
+                format: wNumb({
+                    decimals: 0,
+                    }),
+                range: {
+                min: 1224,
+                max: 2004
+                }
+            });
+            sel_Building.noUiSlider.on('update', function (values) {
+            filterVals =[];
+            for (value in values){
+            filterVals.push(parseInt(value))
+            }
+            val_Building = document.getElementById('val_Building');
+            val_Building.innerHTML = values.join(' - ');
+                filterFunc()
+            });
+            document.getElementById("menu").appendChild(
+                document.createElement("div"));
+            var div_old = document.createElement("div");
+            div_old.id = "div_old";
+            div_old.className = "slider";
+            document.getElementById("menu").appendChild(div_old);
+            var lab_old = document.createElement('div');
+            lab_old.innerHTML  = 'old: <span id="val_old"></span>';
+            lab_old.className = 'filterlabel';
+            document.getElementById("menu").appendChild(lab_old);
+            var reset_old = document.createElement('div');
+            reset_old.innerHTML = 'clear filter';
+            reset_old.className = 'filterlabel';
+            lab_old.className = 'filterlabel';
+            reset_old.onclick = function() {
+                sel_old.noUiSlider.reset();
+            };
+            document.getElementById("menu").appendChild(reset_old);
+            var sel_old = document.getElementById('div_old');
+            noUiSlider.create(sel_old, {
+                connect: true,
+                start: [21, 801],
+                step: 1,
+                format: wNumb({
+                    decimals: 0,
+                    }),
+                range: {
+                min: 21,
+                max: 801
+                }
+            });
+            sel_old.noUiSlider.on('update', function (values) {
+            filterVals =[];
+            for (value in values){
+            filterVals.push(parseInt(value))
+            }
+            val_old = document.getElementById('val_old');
+            val_old.innerHTML = values.join(' - ');
+                filterFunc()
+            });
+            document.getElementById("menu").appendChild(
+                document.createElement("div"));
+            var div_Age = document.createElement('div');
+            div_Age.id = "div_Age";
+            div_Age.className= "filterselect";
+            document.getElementById("menu").appendChild(div_Age);
+            sel_Age = document.createElement('select');
+            sel_Age.multiple = true;
+            sel_Age.size = 5;
+            sel_Age.id = "sel_Age";
+            var Age_options_str = "<option value='' unselected></option>";
+            sel_Age.onchange = function(){filterFunc()};
+            Age_options_str  += '<option value="100 - 300">100 - 300</option>';
+            Age_options_str  += '<option value="300 - 500">300 - 500</option>';
+            Age_options_str  += '<option value="50 - 100">50 - 100</option>';
+            Age_options_str  += '<option value="<50"><50</option>';
+            Age_options_str  += '<option value=">500">>500</option>';
+            sel_Age.innerHTML = Age_options_str;
+            div_Age.appendChild(sel_Age);
+            var lab_Age = document.createElement('div');
+            lab_Age.innerHTML = 'Age';
+            lab_Age.className = 'filterlabel';
+            div_Age.appendChild(lab_Age);
+            var reset_Age = document.createElement('div');
+            reset_Age.innerHTML = 'clear filter';
+            reset_Age.className = 'filterlabel';
+            reset_Age.onclick = function() {
+                var options = document.getElementById("sel_Age").options;
+                for (var i=0; i < options.length; i++) {
+                    options[i].selected = false;
+                }
+                filterFunc();
+            };
+            div_Age.appendChild(reset_Age);
+            document.getElementById("menu").appendChild(
+                document.createElement("div"));
+            var div_Huyen = document.createElement('div');
+            div_Huyen.id = "div_Huyen";
+            div_Huyen.className= "filterselect";
+            document.getElementById("menu").appendChild(div_Huyen);
+            sel_Huyen = document.createElement('select');
+            sel_Huyen.multiple = true;
+            sel_Huyen.size = 10;
+            sel_Huyen.id = "sel_Huyen";
+            var Huyen_options_str = "<option value='' unselected></option>";
+            sel_Huyen.onchange = function(){filterFunc()};
+            Huyen_options_str  += '<option value="HUYỆN CHÂU THÀNH">HUYỆN CHÂU THÀNH</option>';
+            Huyen_options_str  += '<option value="HUYỆN CÙ LAO DUNG">HUYỆN CÙ LAO DUNG</option>';
+            Huyen_options_str  += '<option value="HUYỆN KẾ SÁCH">HUYỆN KẾ SÁCH</option>';
+            Huyen_options_str  += '<option value="HUYỆN LONG PHÚ">HUYỆN LONG PHÚ</option>';
+            Huyen_options_str  += '<option value="HUYỆN MỸ TÚ">HUYỆN MỸ TÚ</option>';
+            Huyen_options_str  += '<option value="HUYỆN MỸ XUYÊN">HUYỆN MỸ XUYÊN</option>';
+            Huyen_options_str  += '<option value="HUYỆN NGÃ NĂM">HUYỆN NGÃ NĂM</option>';
+            Huyen_options_str  += '<option value="HUYỆN THẠNH TRỊ">HUYỆN THẠNH TRỊ</option>';
+            Huyen_options_str  += '<option value="HUYỆN TRẦN ĐỀ">HUYỆN TRẦN ĐỀ</option>';
+            Huyen_options_str  += '<option value="THÀNH PHỐ SÓC TRĂNG">THÀNH PHỐ SÓC TRĂNG</option>';
+            Huyen_options_str  += '<option value="THỊ XÃ VĨNH CHÂU">THỊ XÃ VĨNH CHÂU</option>';
+            sel_Huyen.innerHTML = Huyen_options_str;
+            div_Huyen.appendChild(sel_Huyen);
+            var lab_Huyen = document.createElement('div');
+            lab_Huyen.innerHTML = 'Huyen';
+            lab_Huyen.className = 'filterlabel';
+            div_Huyen.appendChild(lab_Huyen);
+            var reset_Huyen = document.createElement('div');
+            reset_Huyen.innerHTML = 'clear filter';
+            reset_Huyen.className = 'filterlabel';
+            reset_Huyen.onclick = function() {
+                var options = document.getElementById("sel_Huyen").options;
+                for (var i=0; i < options.length; i++) {
+                    options[i].selected = false;
+                }
+                filterFunc();
+            };
+            div_Huyen.appendChild(reset_Huyen);
+            document.getElementById("menu").appendChild(
+                document.createElement("div"));
+            var div_Classifica = document.createElement('div');
+            div_Classifica.id = "div_Classifica";
+            div_Classifica.className= "filterselect";
+            document.getElementById("menu").appendChild(div_Classifica);
+            sel_Classifica = document.createElement('select');
+            sel_Classifica.multiple = true;
+            sel_Classifica.size = 3;
+            sel_Classifica.id = "sel_Classifica";
+            var Classifica_options_str = "<option value='' unselected></option>";
+            sel_Classifica.onchange = function(){filterFunc()};
+            Classifica_options_str  += '<option value="Chưa phân hạng">Chưa phân hạng</option>';
+            Classifica_options_str  += '<option value="Cấp quốc gia">Cấp quốc gia</option>';
+            Classifica_options_str  += '<option value="Cấp tỉnh">Cấp tỉnh</option>';
+            sel_Classifica.innerHTML = Classifica_options_str;
+            div_Classifica.appendChild(sel_Classifica);
+            var lab_Classifica = document.createElement('div');
+            lab_Classifica.innerHTML = 'Classifica';
+            lab_Classifica.className = 'filterlabel';
+            div_Classifica.appendChild(lab_Classifica);
+            var reset_Classifica = document.createElement('div');
+            reset_Classifica.innerHTML = 'clear filter';
+            reset_Classifica.className = 'filterlabel';
+            reset_Classifica.onclick = function() {
+                var options = document.getElementById("sel_Classifica").options;
+                for (var i=0; i < options.length; i++) {
+                    options[i].selected = false;
+                }
+                filterFunc();
+            };
+            div_Classifica.appendChild(reset_Classifica);
+        resetLabels([layer_KhmerPagodaAge_3,layer_KhmerPogadaClassification_4,layer_ChuaKhmertheohuyen_5,layer_ChuaKhmer_6]);
+        map.on("zoomend", function(){
+            resetLabels([layer_KhmerPagodaAge_3,layer_KhmerPogadaClassification_4,layer_ChuaKhmertheohuyen_5,layer_ChuaKhmer_6]);
+        });
+        map.on("layeradd", function(){
+            resetLabels([layer_KhmerPagodaAge_3,layer_KhmerPogadaClassification_4,layer_ChuaKhmertheohuyen_5,layer_ChuaKhmer_6]);
+        });
+        map.on("layerremove", function(){
+            resetLabels([layer_KhmerPagodaAge_3,layer_KhmerPogadaClassification_4,layer_ChuaKhmertheohuyen_5,layer_ChuaKhmer_6]);
+        });
+        </script>
+    </body>
+</html>
